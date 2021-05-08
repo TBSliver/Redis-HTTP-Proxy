@@ -1,5 +1,11 @@
 # Redis HTTP Proxy
 
+HTTP based Redis proxy. Currently has no authentication layer, and only implements a subset of redis functions.
+
+This is initially being built to allow access to the Redis DB used by ATLAS from inside the dev kit. Associated
+Blueprints for that will be coming if it actually all works!
+
+
 Setup and start:
 
 ```shell
