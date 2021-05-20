@@ -1,22 +1,163 @@
-import {redisCallback, redisClient} from "../main";
+import {redisCallback} from "../app";
 import {Router} from "express";
+import {redisClient} from "../redis-client";
 
-const router = Router();
+export const setsRouter = Router();
 
-router.post('/sadd/:key', (req, res) => {
+/**
+ * @openapi
+ * /sadd/{key}:
+ *   post:
+ *     tags:
+ *       - Sets
+ *     description: Add one or more members to a set. [Redis SADD Docs](https://redis.io/commands/sadd)
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       description: Members to add to the set. Text/plain will only take a single member
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             example: ["bleep","bloop"]
+ *         text/plain:
+ *           schema:
+ *             type: string
+ *             example: boing
+ *     responses:
+ *       200:
+ *         description: Returns the number of members actually added to the set (not including duplicates)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: integer
+ *               example: 2
+ */
+setsRouter.post('/sadd/:key', (req, res) => {
     redisClient.sadd(req.params.key, req.body, redisCallback(res));
 });
 
-router.post('/srem/:key', (req, res) => {
+/**
+ * @openapi
+ * /srem/{key}:
+ *   post:
+ *     tags:
+ *       - Sets
+ *     description: Remove one or more members from the set. [Redis SREM Docs](https://redis.io/commands/srem)
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       description: Members to remove from the set
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             example: ["bleep","bloop"]
+ *     responses:
+ *       200:
+ *         description: Returns the number of members actually removed from the set
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: integer
+ *               example: 2
+ */
+setsRouter.post('/srem/:key', (req, res) => {
     redisClient.srem(req.params.key, req.body, redisCallback(res));
 });
 
-router.get('/scard/:key', (req, res) => {
+/**
+ * @openapi
+ * /scard/{key}:
+ *   get:
+ *     tags:
+ *       - Sets
+ *     description: Get the number of members in a set. [Redis SCARD Docs](https://redis.io/commands/scard)
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Returns the number of elements in the set
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: integer
+ *               example: 2
+ */
+setsRouter.get('/scard/:key', (req, res) => {
     redisClient.scard(req.params.key, redisCallback(res));
 });
 
-router.get('/smembers/:key', (req, res) => {
+/**
+ * @openapi
+ * /smembers/{key}:
+ *   get:
+ *     tags:
+ *       - Sets
+ *     description: Get the members in a set. [Redis SMEMBERS Docs](https://redis.io/commands/smembers)
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Returns the members in the set
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               example: ["bleep", "bloop"]
+ */
+setsRouter.get('/smembers/:key', (req, res) => {
     redisClient.smembers(req.params.key, redisCallback(res));
 });
 
-export const setsRouter = router;
+/**
+ * @openapi
+ * /sismember/{key}:
+ *   post:
+ *     tags:
+ *       - Sets
+ *     description: Checks if a member is in a set. [Redis SISMEMBER Docs](https://redis.io/commands/sismeber)
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       description: Member to check is in the set.
+ *       required: true
+ *       content:
+ *         text/plain:
+ *           schema:
+ *             type: string
+ *             example: bleep
+ *     responses:
+ *       200:
+ *         description: Returns 1 if the member is in the set, 0 otherwise
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: integer
+ *               example: 1
+ */
+setsRouter.post('/sismember/:key', (req, res) => {
+    redisClient.sismember(req.params.key, req.body, redisCallback(res));
+});

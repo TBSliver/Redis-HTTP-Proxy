@@ -36,6 +36,8 @@ set REDIS_URL="redis://127.0.0.1:6379"
 $env:REDIS_URL = "redis://127.0.0.1:6379"
 ```
 
+This defaults to `redis://127.0.0.1:6379`
+
 ### Port
 
 The port can be set by using the `PORT` environment variable
@@ -48,3 +50,20 @@ set PORT=3000
 # on windows powershell
 $env:PORT = 3000
 ```
+
+This defaults to `3000`
+
+### Auth Key
+
+The Auth Key used for authentication must be set using the `AUTH_KEY` environment variable
+
+```shell
+# on *nix
+export AUTH_KEY=3000
+# on windows with cmd
+set AUTH_KEY=3000
+# on windows powershell
+$env:AUTH_KEY = 3000
+```
+
+This has no default and will throw an error if not set.
