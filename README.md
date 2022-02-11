@@ -31,7 +31,7 @@ the [`node-redis` documentation](https://github.com/NodeRedis/node-redis#options
 # on *nix
 export REDIS_URL="redis://127.0.0.1:6379"
 # on windows with cmd
-set REDIS_URL="redis://127.0.0.1:6379"
+set REDIS_URL=redis://127.0.0.1:6379
 # on windows powershell
 $env:REDIS_URL = "redis://127.0.0.1:6379"
 ```
