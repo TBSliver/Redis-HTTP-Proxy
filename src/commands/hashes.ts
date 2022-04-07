@@ -32,6 +32,33 @@ hashesRouter.get('/hgetall/:key', (req, res) => {
 
 /**
  * @openapi
+ * /hvals/{key}:
+ *   get:
+ *     tags:
+ *       - Hashes
+ *     description: Get the values for a hash. [Redis HVALS Docs](https://redis.io/commands/hvals)
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Returns the value for the field
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               example: [ "123", "456" ]
+ */
+hashesRouter.get('/hvals/:key', (req, res) => {
+    redisClient.hvals(req.params.key, redisCallback(res));
+});
+
+
+/**
+ * @openapi
  * /hget/{key}/{field}:
  *   get:
  *     tags:
@@ -127,6 +154,6 @@ hashesRouter.post('/hset/:key/:field', (req, res) => {
  *               type: string
  *               example: "123"
  */
-hashesRouter.get('hdel/:key/:field', (req, res) => {
+hashesRouter.get('/hdel/:key/:field', (req, res) => {
     redisClient.hdel(req.params.key, req.params.field, redisCallback(res));
 });

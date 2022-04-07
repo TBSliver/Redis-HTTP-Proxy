@@ -149,6 +149,10 @@ setsRouter.get('/smembers/:key', (req, res) => {
  *           schema:
  *             type: string
  *             example: bleep
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             example: ["bleep"]
  *     responses:
  *       200:
  *         description: Returns 1 if the member is in the set, 0 otherwise
